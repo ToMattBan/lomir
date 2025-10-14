@@ -11,7 +11,7 @@
   - Character Race
   - Character backstory
 - Every step is saved on localStorage
-
+---
 - Logged user can see:
   - Character:
     - Name / Race
