@@ -71,7 +71,6 @@ export default withNuxt(
       'no-unassigned-vars': 'warn',
       'no-unmodified-loop-condition': 'error',
       'no-use-before-define': 'error',
-      'no-useless-assignment': 'warn',
       'prefer-template': 'error',
 
       /***********************
@@ -123,7 +122,7 @@ export default withNuxt(
       '@stylistic/semi': ['error', 'always', { omitLastInOneLineBlock: false }],
       '@stylistic/semi-style': ['error', 'last'],
       '@stylistic/space-before-blocks': 'error',
-      '@stylistic/space-before-function-paren': ['error', 'always'],
+      '@stylistic/space-before-function-paren': ['error', { anonymous: 'never', named: 'never', asyncArrow: 'always', catch: 'always' }],
       '@stylistic/spaced-comment': ['error', 'always', { exceptions: ['*', '/'] }],
       '@stylistic/switch-colon-spacing': 'warn',
       '@stylistic/template-curly-spacing': ['error', 'always'],

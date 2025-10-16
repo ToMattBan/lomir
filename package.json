@@ -13,15 +13,17 @@
   },
   "dependencies": {
     "nuxt": "^4.1.2",
-    "nuxt-auth-utils": "0.5.25",
+    "octokit": "^5.0.3",
     "vue": "^3.5.22",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.9.0",
+    "@octokit/types": "^15.0.0",
     "@stylistic/eslint-plugin": "^5.4.0",
     "@types/node": "^24.7.1",
     "eslint": "^9.37.0",
+    "my-itcss": "^1.5.2",
     "sass-embedded": "^1.93.2",
     "typescript-eslint": "^8.46.0",
     "vue-eslint-parser": "^10.2.0"
