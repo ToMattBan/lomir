@@ -2,7 +2,11 @@
   <div class="home-container">
     <h1 class="">{{ name }}</h1>
 
-    <div class="typewriter-container">
+    <div class="_fz30 _tac" v-if="existingUser">
+      Parece que você já criou um personagem. Agora é só esperar S2
+    </div>
+
+    <div class="typewriter-container" v-else>
       <div v-show="displayText">
         <span class="typewriter-text">{{ displayText }}</span>
         <span class="cursor">|</span>
@@ -49,10 +53,12 @@
   type TStartInputs = 'none' | 'name' | 'race' | 'image' | 'backstory';
   type TSentences = 'initial' | 'questionName' | 'questionRace' | 'questionImage' | 'questionBackstory' | 'finish';
 
+  const existingUser = ref<boolean>(false);
   onMounted(() => {
     const user = localStorage.getItem('user');
     if (user) {
-      navigateTo('/home');
+      existingUser.value = true;
+      // navigateTo('/home');
     }
   });
 
@@ -125,7 +131,7 @@
       'Tendo uma raça tão diferente, deve ter uma boa história por trás, não é?',
       'Então vai, me conta sua história',
     ],
-    finish: [''],
+    finish: ['Muito obrigado, agora podemos começar... MUAHAHAHAHAH'],
   };
   const speeds = {
     type: 60,
