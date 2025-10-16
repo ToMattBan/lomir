@@ -70,10 +70,10 @@
 
   async function saveUser() {
     const user: IUser = {
-      name: userName.value,
-      race: userRace.value,
-      backstory: userBackstory.value,
-      image: userImage.value,
+      name: userName.value.trim(),
+      race: userRace.value.trim(),
+      backstory: userBackstory.value.trim(),
+      image: userImage.value.trim(),
     };
 
     localStorage.setItem('user', JSON.stringify(user));
