@@ -6,5 +6,9 @@
 </template>
 
 <script setup lang="ts">
-  import './stores/index';
+  import storeInit from './stores/index';
+
+  onBeforeMount(() => {
+    storeInit();
+  });
 </script>
