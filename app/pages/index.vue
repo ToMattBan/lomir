@@ -156,9 +156,9 @@
     finish: ['Muito obrigado, agora podemos começar... MUAHAHAHAHAH'],
   };
   const speeds = {
-    type: 5,
-    delete: 5,
-    wait: 5,
+    type: 60,
+    delete: 20,
+    wait: 2000,
   };
 
   const sentencesVariants = ref<TSentences>('initial');
