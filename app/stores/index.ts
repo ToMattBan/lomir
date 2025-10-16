@@ -12,4 +12,5 @@ async function getUsersInfo() {
 
 export default async function init() {
   typedUserFile.refreshInfo = getUsersInfo;
+  getUsersInfo();
 }
