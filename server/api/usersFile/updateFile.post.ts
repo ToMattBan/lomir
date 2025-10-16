@@ -14,7 +14,7 @@ export default defineEventHandler(async (event) => {
       name: process.env.GTH_NM as string,
       email: process.env.GTH_EM as string,
     },
-    content: btoa(JSON.stringify(content)),
+    content: Buffer.from(JSON.stringify(content, null, 2)).toString('base64'),
     headers: { 'X-GitHub-Api-Version': '2022-11-28' },
   });
 

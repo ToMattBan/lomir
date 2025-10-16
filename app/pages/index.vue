@@ -92,8 +92,30 @@
     const reader = new FileReader();
 
     reader.onload = (event) => {
-      const base64 = event.target?.result as string;
-      userImage.value = base64;
+      const image = new Image();
+
+      image.onload = () => {
+        // Create canvas with the same dimensions as the image
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d')!;
+
+        // Set canvas size to image size
+        canvas.width = image.width;
+        canvas.height = image.height;
+
+        // Draw image onto canvas
+        ctx.drawImage(image, 0, 0);
+
+        // Convert to WebP with quality setting (0.8 = 80% quality)
+        const webpBase64 = canvas.toDataURL('image/webp', 0.8);
+        userImage.value = webpBase64;
+
+        // Optional: Log size comparison
+        console.log('Original size:', file.size, 'bytes');
+        console.log('WebP size (~approx):', Math.round((webpBase64.length - 'data:image/webp;base64,'.length) * 0.75), 'bytes');
+      };
+
+      image.src = event.target?.result as string;
     };
 
     reader.onerror = (error) => {
@@ -134,9 +156,9 @@
     finish: ['Muito obrigado, agora podemos começar... MUAHAHAHAHAH'],
   };
   const speeds = {
-    type: 60,
-    delete: 20,
-    wait: 2000,
+    type: 5,
+    delete: 5,
+    wait: 5,
   };
 
   const sentencesVariants = ref<TSentences>('initial');
