@@ -8,10 +8,27 @@
         <span class="cursor">|</span>
       </div>
 
-      <div class="_1/1">
-        <input v-model="userName" placeholder="Seu nome aqui" v-show="inputToshow === 'name'">
-        <input v-model="userRace" placeholder="Sua raça aqui" v-show="inputToshow === 'race'">
-        <textarea v-model="userBackstory" placeholder="De onde veio, o que já fez, etc..." v-show="inputToshow === 'backstory'" />
+      <div class="inputs-container _1/1">
+        <input
+          v-model="userName" placeholder="Seu nome aqui" v-show="inputToshow === 'name'"
+          @input="clearError"
+        >
+        <input
+          v-model="userRace" placeholder="Sua raça aqui" v-show="inputToshow === 'race'"
+          @input="clearError"
+        >
+
+        <div v-show="inputToshow === 'image'">
+          <img :src="userImage">
+          <input type="file" @change="newImage" @input="clearError">
+        </div>
+
+        <textarea
+          v-model="userBackstory" placeholder="De onde veio, o que já fez, etc..." v-show="inputToshow === 'backstory'"
+          @input="clearError"
+        />
+
+        <div class="validation-error" v-show="validationError">{{ validationError }}</div>
       </div>
 
       <div class="start-buttons">
@@ -25,10 +42,12 @@
 
 <script setup lang="ts">
   import FantasyButton from '~/components/FantasyButton.vue';
+  import type { IUsersFileInfo, IUser } from '~/interfaces/userInfo';
+  import usersFileInfoData from '../stores/usersFileInfo.json';
 
   type TStartButtons = 'none' | 'start' | 'startForm' | 'continue';
-  type TStartInputs = 'none' | 'name' | 'race' | 'backstory';
-  type TSentences = 'initial' | 'questionName' | 'questionRace' | 'questionBackstory';
+  type TStartInputs = 'none' | 'name' | 'race' | 'image' | 'backstory';
+  type TSentences = 'initial' | 'questionName' | 'questionRace' | 'questionImage' | 'questionBackstory' | 'finish';
 
   onMounted(() => {
     const user = localStorage.getItem('user');
@@ -39,31 +58,79 @@
 
   const userName = ref<string>('');
   const userRace = ref<string>('');
+  const userImage = ref<string>('');
   const userBackstory = ref<string>('');
+  const usersFileInfo = reactive<IUsersFileInfo>(usersFileInfoData);
+
+  async function saveUser() {
+    const user: IUser = {
+      name: userName.value,
+      race: userRace.value,
+      backstory: userBackstory.value,
+      image: userImage.value,
+    };
+
+    localStorage.setItem('user', JSON.stringify(user));
+
+    await updateUser(usersFileInfo.sha, user);
+  }
+
+  function newImage(e: Event) {
+    const target = e.target as HTMLInputElement;
+    const file = target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = (event) => {
+      const base64 = event.target?.result as string;
+      userImage.value = base64;
+    };
+
+    reader.onerror = (error) => {
+      console.error('Error reading file:', error);
+    };
+
+    reader.readAsDataURL(file);
+  }
 
   const name = 'Valeroth';
   const allSentences = {
     initial: [
       `Bem-vindo à ${ name }!`,
-      // 'Você acha que é capaz de sobreviver a esse mundo do qual você não sabe NADA??',
-      // 'Vamos ver se você continuará tão valentão até o final da campanha! MUAHAHAHAHA',
-      // '...',
-      // '...',
-      // 'Mas espera, eu nem sei quem você é...',
+      'Você acha que é capaz de sobreviver a esse mundo do qual você não sabe NADA??',
+      'Vamos ver se você continuará tão valentão até o final da campanha! MUAHAHAHAHA',
+      '...',
+      '...',
+      'Mas espera, eu nem sei quem você é...',
       'Tá na hora de mudar isso, não acha?',
     ],
-    questionName: ['Ok, vamos começar do começo.', 'Qual é o seu nome?'],
-    questionRace: [`Ah, então esse é o seu nome.`, 'Mas o quê você é? Qual sua raça?'],
+    questionName: [
+      'Ok, vamos começar do começo.',
+      'Qual é o seu nome?',
+    ],
+    questionRace: [
+      `Ah, então é assim que você se chama.`,
+      'Mas o quê você é? Qual sua raça?',
+    ],
+    questionImage: [
+      'Oh, faz tempo que não via um desses.',
+      'E pra falar a verdade eu não estou vendo muito bem, perdi meus óculos, sabe...',
+      'Poderia me mostrar como tu está agora?',
+    ],
     questionBackstory: [
-      `Oh, faz tempo que não via um desses.`,
       'Tendo uma raça tão diferente, deve ter uma boa história por trás, não é?',
       'Então vai, me conta sua história',
     ],
+    finish: [''],
   };
   const speeds = {
     type: 60,
-    delete: 30,
-    wait: 200,
+    delete: 20,
+    wait: 2000,
   };
 
   const sentencesVariants = ref<TSentences>('initial');
@@ -75,6 +142,11 @@
   const currentSentenceIndex = ref<number>(0);
   const isDeleting = ref<boolean>(false);
   const solvePromisse = ref();
+  const validationError = ref<string>('');
+
+  function clearError() {
+    validationError.value = '';
+  }
 
   function startDelete() {
     const totalChars = displayText.value.length;
@@ -115,12 +187,16 @@
 
     if (isDeleting.value) {
       await new Promise((resolve) => {
-        startDelete();
-        solvePromisse.value = resolve;
+        setTimeout(() => {
+          startDelete();
+          solvePromisse.value = resolve;
+        }, speed);
       });
+
+      speed = speeds.type;
     }
 
-    if (currentSentence || isDeleting.value) {
+    if (currentSentence && !isDeleting.value) {
       setTimeout(() => {
         type();
       }, speed);
@@ -137,9 +213,15 @@
     } else if (sentencesVariants.value === 'questionRace') {
       buttonToShow.value = 'continue';
       inputToshow.value = 'race';
+    } else if (sentencesVariants.value === 'questionImage') {
+      buttonToShow.value = 'continue';
+      inputToshow.value = 'image';
     } else if (sentencesVariants.value === 'questionBackstory') {
       buttonToShow.value = 'continue';
       inputToshow.value = 'backstory';
+    } else if (sentencesVariants.value === 'finish') {
+      buttonToShow.value = 'none';
+      inputToshow.value = 'none';
     }
   }
 
@@ -150,6 +232,20 @@
   }
 
   async function formHandle() {
+    if (sentencesVariants.value === 'questionName' && !userName.value) {
+      validationError.value = 'Todo mundo tem um nome, não tente me enganar';
+      return;
+    } else if (sentencesVariants.value === 'questionRace' && !userRace.value) {
+      validationError.value = 'Olha, alguma coisa tu é, de certeza';
+      return;
+    } else if (sentencesVariants.value === 'questionImage' && !userImage.value) {
+      validationError.value = 'Vamos lá, quero ver como tu é, não se acanhe';
+      return;
+    } else if (sentencesVariants.value === 'questionBackstory' && !userBackstory.value) {
+      validationError.value = 'Se tu chegou até aqui, um passado tu tem, me mostra vai';
+      return;
+    }
+
     buttonToShow.value = 'none';
     inputToshow.value = 'none';
 
@@ -165,22 +261,26 @@
       sentencesToShow.value = allSentences.questionRace;
       sentencesVariants.value = 'questionRace';
     } else if (sentencesVariants.value === 'questionRace') {
+      sentencesToShow.value = allSentences.questionImage;
+      sentencesVariants.value = 'questionImage';
+    } else if (sentencesVariants.value === 'questionImage') {
       sentencesToShow.value = allSentences.questionBackstory;
       sentencesVariants.value = 'questionBackstory';
     } else if (sentencesVariants.value === 'questionBackstory') {
-      // lalala
+      sentencesToShow.value = allSentences.finish;
+      sentencesVariants.value = 'finish';
+      saveUser();
     }
 
     startTyping();
   }
-
 </script>
 
 <style lang="scss" scoped>
 .home-container {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 2rem);
+  min-height: calc(100vh - 2rem);
 
   h1 {
     text-align: center;
@@ -201,6 +301,20 @@
     gap: 30px;
     align-items: center;
     text-align: center;
+    width: 80%;
+
+    .inputs-container {
+      img {
+        max-width: 100%;
+      }
+
+      .validation-error {
+        color: red;
+        font-size: 1.1rem;
+        font-family: 'Cinzel', 'Times New Roman', serif;
+        margin-top: 8px;
+      }
+    }
 
     .cursor {
       animation: blink 1s infinite;
