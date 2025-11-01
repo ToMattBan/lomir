@@ -1,6 +1,15 @@
 <template>
   <div id="nimda">
-    <div v-show="currentTab === 'lore'" />
+    <div id="lore_tab" v-show="currentTab === 'lore'">
+      <ul>
+        <li :key="index" v-for="lore, index in campaignFileInfo.checklist">
+          <fieldset>
+            <input :id="index.toString()" type="checkbox" :name="index.toString()">
+            <label :for="index.toString()">{{ lore }}</label>
+          </fieldset>
+        </li>
+      </ul>
+    </div>
 
     <div id="chars_tab" v-show="currentTab === 'chars'">
       <div :key="key" v-for="(user, key) in usersFileInfo.content" class="char-card">
@@ -28,19 +37,21 @@
 </template>
 
 <script setup lang="ts">
-  import type {  IUsersFileInfo } from '~/interfaces/storesInfo';
+  import type { ICampaignFileInfo, IUsersFileInfo } from '~/interfaces/storesInfo';
   import usersFileInfoData from '../stores/usersFileInfo.json';
+  import campaignFileInfoData from '../stores/campaignFileInfo.json';
 
   type TTabs = 'lore' | 'chars';
 
   const usersFileInfo = reactive<IUsersFileInfo>(usersFileInfoData);
+  const campaignFileInfo = reactive<ICampaignFileInfo>(campaignFileInfoData);
 
   const tabs: { name: string; id: TTabs; }[] = [
     { name: 'Lore', id: 'lore' },
     { name: 'Chars', id: 'chars' },
   ];
 
-  const currentTab = ref<TTabs>('chars');
+  const currentTab = ref<TTabs>('lore');
 </script>
 
 <style lang="scss" scoped>
@@ -78,10 +89,8 @@
   }
 }
 
+#lore_tab,
 #chars_tab {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
   max-height: calc(100vh - 60px - 2rem);
   overflow: scroll;
   -ms-overflow-style: none;
@@ -90,6 +99,30 @@
   &::-webkit-scrollbar {
     display: none;
   }
+}
+
+#lore_tab {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    li {
+      input:checked ~ label {
+        text-decoration-line: line-through;
+      }
+    }
+
+  }
+}
+
+#chars_tab {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
 
   .char-card {
     display: flex;
