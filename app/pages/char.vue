@@ -83,7 +83,7 @@
 
   const usersFileInfo = reactive<IUsersFileInfo>(usersFileInfoData);
 
-  const userName = ref<string>('Mahina');
+  const userName = ref<string>('');
   const userChar = ref<IUser>();
 
   const validationError = ref<string>('');
