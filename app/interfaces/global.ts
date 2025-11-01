@@ -1,3 +1,8 @@
-import type { IUsersFileInfo } from './userInfo';
+import type { ICampaignFileInfo, IUsersFileInfo } from './storesInfo';
 
-export interface IExtendedWindow extends Window { stores?: { users: IUsersFileInfo; }; }
+export interface IExtendedWindow extends Window {
+  stores?: {
+    users: IUsersFileInfo;
+    campaign: ICampaignFileInfo;
+  };
+}

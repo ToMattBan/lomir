@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
   import FantasyButton from '~/components/FantasyButton.vue';
-  import type { IUsersFileInfo, IUser } from '~/interfaces/userInfo';
+  import type { IUsersFileInfo, IUser } from '~/interfaces/storesInfo';
   import usersFileInfoData from '../stores/usersFileInfo.json';
 
   type TStartButtons = 'none' | 'start' | 'startForm' | 'continue';

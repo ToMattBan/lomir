@@ -1,4 +1,4 @@
-import type { IUser, IUsersFileInfo } from '~/interfaces/userInfo';
+import type { IUser, IUsersFileInfo } from '~/interfaces/storesInfo';
 import usersFileInfo from '@/stores/usersFileInfo.json';
 
 const typedUserFile = reactive<IUsersFileInfo>(usersFileInfo);

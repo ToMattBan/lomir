@@ -1,6 +1,7 @@
 <template>
   <div id="nimda">
-    <div v-show="currentTab === 'lore'">LORE</div>
+    <div v-show="currentTab === 'lore'" />
+
     <div id="chars_tab" v-show="currentTab === 'chars'">
       <div :key="key" v-for="(user, key) in usersFileInfo.content" class="char-card">
         <img :src="user.image">
@@ -27,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import type {  IUsersFileInfo } from '~/interfaces/userInfo';
+  import type {  IUsersFileInfo } from '~/interfaces/storesInfo';
   import usersFileInfoData from '../stores/usersFileInfo.json';
 
   type TTabs = 'lore' | 'chars';

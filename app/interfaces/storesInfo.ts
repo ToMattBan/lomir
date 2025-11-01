@@ -10,3 +10,9 @@ export interface IUser {
   image: string;
   backstory: string;
 }
+
+export interface ICampaignFileInfo {
+  sha: string;
+  checklist: string[];
+  refreshInfo: (() => Promise<void>) | null;
+}

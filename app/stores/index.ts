@@ -1,8 +1,10 @@
-import type { IUsersFileInfo } from '@/interfaces/userInfo';
+import type { ICampaignFileInfo, IUsersFileInfo } from '~/interfaces/storesInfo';
 import usersFileInfo from './usersFileInfo.json';
+import campaignFileInfo from './campaignFileInfo.json';
 import type { IExtendedWindow } from '~/interfaces/global';
 
 const typedUserFile = reactive<IUsersFileInfo>(usersFileInfo);
+const typedCampaignFile = reactive<ICampaignFileInfo>(campaignFileInfo);
 
 async function getUsersInfo() {
   const { sha, content } = await $fetch('/api/usersFile/getAll', { method: 'GET' });
@@ -11,9 +13,19 @@ async function getUsersInfo() {
   typedUserFile.content = content;
 }
 
+async function getCampaignInfo() {
+  const { sha, content } = await $fetch('/api/campaign/getAll', { method: 'GET' });
+
+  typedCampaignFile.sha = sha;
+  typedCampaignFile.checklist = content;
+}
+
 export default async function init() {
   typedUserFile.refreshInfo = getUsersInfo;
   getUsersInfo();
 
-  (window as IExtendedWindow).stores = { users: usersFileInfo };
+  typedCampaignFile.refreshInfo = getCampaignInfo;
+  getCampaignInfo();
+
+  (window as IExtendedWindow).stores = { users: usersFileInfo, campaign: campaignFileInfo };
 }
