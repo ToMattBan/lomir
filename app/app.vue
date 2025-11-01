@@ -33,6 +33,7 @@ html,body {
 
 .app {
   max-width: 600px;
+  overflow: hidden;
   min-height: calc(100vh - 2rem);
   margin: auto;
   padding: 1rem;

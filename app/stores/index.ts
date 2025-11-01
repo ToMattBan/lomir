@@ -1,5 +1,6 @@
 import type { IUsersFileInfo } from '@/interfaces/userInfo';
 import usersFileInfo from './usersFileInfo.json';
+import type { IExtendedWindow } from '~/interfaces/global';
 
 const typedUserFile = reactive<IUsersFileInfo>(usersFileInfo);
 
@@ -13,4 +14,6 @@ async function getUsersInfo() {
 export default async function init() {
   typedUserFile.refreshInfo = getUsersInfo;
   getUsersInfo();
+
+  (window as IExtendedWindow).stores = { users: usersFileInfo };
 }
