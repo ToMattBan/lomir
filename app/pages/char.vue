@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <h1 class="">{{ name }}</h1>
+    <h1 @click="refreshUserData">{{ name }}</h1>
 
     <div class="typewriter-container" v-if="!userChar">
       <div>
@@ -83,7 +83,7 @@
 
   const usersFileInfo = reactive<IUsersFileInfo>(usersFileInfoData);
 
-  const userName = ref<string>('');
+  const userName = ref<string>('Mahina');
   const userChar = ref<IUser>();
 
   const validationError = ref<string>('');
@@ -99,6 +99,12 @@
       userChar.value = findUser;
     } else {
       validationError.value = 'Nenhum personagem com esse nome cadastrado!';
+    }
+  }
+
+  async function refreshUserData() {
+    if (usersFileInfo.refreshInfo) {
+      usersFileInfo.refreshInfo();
     }
   }
 
@@ -167,14 +173,16 @@
 
   .attr-card {
     display: flex;
+    flex-wrap: wrap;
     margin-top: 3rem;
     gap: 1rem;
 
     &>div {
-      width: 100%;
+      flex: 1;
+      min-width: 40%;
       box-sizing: border-box;
       text-align: center;
-      padding: 1rem 0;
+      padding: 0;
       border: 3px solid #5d2906;
       border-radius: 8px;
       color: #fff5e1;
@@ -184,7 +192,7 @@
 
       .attr-number {
         display: block;
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
     }
   }
@@ -201,6 +209,7 @@
     .eqpm-other {
       border-radius: 8px;
       flex: 1;
+      min-width: 33%;
       border: solid 3px black;
       padding: 0.5rem 1rem;
 
