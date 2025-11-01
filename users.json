@@ -9,6 +9,12 @@
       "agility": 5,
       "focus": 3,
       "resistency": 6
+    },
+    "equipment": {
+      "gold": 0,
+      "weapon": "Adaga de Ferro",
+      "armor": "Roupa de Couro",
+      "other": []
     }
   },
   "Bruno": {
@@ -21,6 +27,12 @@
       "agility": 3,
       "focus": 5,
       "resistency": 4
+    },
+    "equipment": {
+      "gold": 0,
+      "weapon": "Grimório",
+      "armor": "Roupas Simples",
+      "other": []
     }
   },
   "Mahina": {
@@ -33,6 +45,12 @@
       "agility": 3,
       "focus": 6,
       "resistency": 3
+    },
+    "equipment": {
+      "gold": 0,
+      "weapon": "Grimório",
+      "armor": "Roupas Leves",
+      "other": []
     }
   }
 }
