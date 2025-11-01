@@ -36,7 +36,11 @@
       </div>
 
       <div class="start-buttons">
-        <FantasyButton v-if="buttonToShow === 'start'" @click="startTyping">Começar Aventura</FantasyButton>
+        <template v-if="buttonToShow === 'start'">
+          <FantasyButton @click="startTyping">Começar Aventura</FantasyButton>
+          <NuxtLink to="/char"><FantasyButton class="_mt" variant="elven"> Já tenho personagem</FantasyButton></NuxtLink>
+        </template>
+
         <FantasyButton v-if="buttonToShow === 'startForm'" @click="formHandle">SIM!</FantasyButton>
         <FantasyButton v-if="buttonToShow === 'continue'" @click="formHandle">Pronto!</FantasyButton>
       </div>
@@ -58,7 +62,7 @@
     const user = localStorage.getItem('user');
     if (user) {
       existingUser.value = true;
-      // navigateTo('/home');
+      navigateTo('/char');
     }
   });
 
@@ -74,6 +78,18 @@
       race: userRace.value.trim(),
       backstory: userBackstory.value.trim(),
       image: userImage.value.trim(),
+      attributes: {
+        agility: 0,
+        focus: 0,
+        resistency: 0,
+        strength: 0,
+      },
+      equipment: {
+        gold: 0,
+        armor: '',
+        weapon: '',
+        other: [],
+      },
     };
 
     localStorage.setItem('user', JSON.stringify(user));

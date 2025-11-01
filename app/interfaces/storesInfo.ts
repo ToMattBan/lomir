@@ -9,6 +9,18 @@ export interface IUser {
   race: string;
   image: string;
   backstory: string;
+  attributes: {
+    strength: number;
+    agility: number;
+    focus: number;
+    resistency: number;
+  };
+  equipment: {
+    gold: number;
+    weapon: string;
+    armor: string;
+    other: string[];
+  };
 }
 
 export interface ICampaignFileInfo {
