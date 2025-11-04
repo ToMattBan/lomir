@@ -18,8 +18,8 @@
 @import url('../node_modules/my-itcss/public/main.min.css');
 
 @font-face {
-  font-family: 'MayaRegular';
-  src: url('./assets/fonts/MayaRegular.ttf') format('truetype');
+  font-family: 'stonehen';
+  src: url('./assets/fonts/stonehen.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
@@ -28,7 +28,7 @@ html,body {
   background-color: black;
   margin: 0;
   padding: 0;
-  font-family: 'MayaRegular';
+  font-family: 'stonehen';
 }
 
 .app {

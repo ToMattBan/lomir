@@ -14,12 +14,37 @@
     <div id="chars_tab" v-show="currentTab === 'chars'">
       <div :key="key" v-for="(user, key) in usersFileInfo.content" class="char-card">
         <img :src="user.image">
-        <div>
+        <div class="user-infos">
           <p class="_df _jcsa _fw7 _fz20">
             <span>{{ user.name }}</span>
             <span>{{ user.race }}</span>
           </p>
+
           <p>{{ user.backstory }}</p>
+
+          <div class="_df _jcsa">
+            <div>
+              <div>Força</div>
+              <div class="_tac">{{ user.attributes.strength }}</div>
+            </div>
+            <div>
+              <div>Agilidade</div>
+              <div class="_tac">{{ user.attributes.agility }}</div>
+            </div>
+            <div>
+              <div>Resistência</div>
+              <div class="_tac">{{ user.attributes.resistency }}</div>
+            </div>
+            <div>
+              <div>Foco</div>
+              <div class="_tac">{{ user.attributes.focus }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="user-buttons">
+          <FantasyButton class="_fz14">Trocar Atributos</FantasyButton>
+          <FantasyButton class="_fz14">Trocar Equipamento</FantasyButton>
         </div>
       </div>
     </div>
@@ -51,7 +76,7 @@
     { name: 'Chars', id: 'chars' },
   ];
 
-  const currentTab = ref<TTabs>('lore');
+  const currentTab = ref<TTabs>('chars');
 </script>
 
 <style lang="scss" scoped>
@@ -126,17 +151,30 @@
 
   .char-card {
     display: flex;
+    flex-wrap: wrap;
     width: 100%;
     gap: 1rem;
 
     img {
+      flex: 1;
       max-width: calc(100% / 3);
       object-fit: cover;
     }
 
-    div {
+    .user-infos {
+      flex: 2;
       max-width: calc((100% / 3) * 2);
       margin: auto;
+    }
+
+    .user-buttons {
+      display: flex;
+      width: 100%;
+      gap: 1rem;
+
+      button {
+        flex: 1;
+      }
     }
   }
 }
