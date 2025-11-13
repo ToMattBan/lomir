@@ -1,6 +1,6 @@
 <template>
   <div class="home-container">
-    <h1 @click="refreshUserData">{{ name }}</h1>
+    <h1 class="_cp" @click="refreshUserData">{{ name }}</h1>
 
     <div class="typewriter-container" v-if="!userChar">
       <div>
@@ -104,7 +104,8 @@
 
   async function refreshUserData() {
     if (usersFileInfo.refreshInfo) {
-      usersFileInfo.refreshInfo();
+      await usersFileInfo.refreshInfo();
+      checkCharacter();
     }
   }
 

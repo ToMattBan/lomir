@@ -12,6 +12,11 @@
     </div>
 
     <div id="chars_tab" v-show="currentTab === 'chars'">
+      <div class="notification" :class="`notification__${notificationType}`" v-show="notification">
+        <div class="close-notification" @click="notification = ''">X</div>
+        <span>{{ notification }}</span>
+      </div>
+
       <div :key="key" v-for="(user, key) in usersFileInfo.content" class="char-card">
         <img :src="user.image">
         <div class="user-infos">
@@ -81,42 +86,82 @@
 
   const currentTab = ref<TTabs>('chars');
 
+  const notification = ref<string>('');
+  const notificationType = ref<'success' | 'error'>('success');
+
   async function updateAttributes(user: IUser) {
-    await updateUser(usersFileInfo.sha, user);
+    try {
+      await updateUser(usersFileInfo.sha, user);
+
+      notificationType.value = 'success';
+      notification.value = 'User updated, please ask the User to refresh their info!';
+      if (usersFileInfo.refreshInfo) {
+        usersFileInfo.refreshInfo();
+      }
+    } catch (e) {
+      notificationType.value = 'error';
+      notification.value = `Couldn't update User --> ${ e }`;
+    }
   }
 </script>
 
 <style lang="scss" scoped>
 #nimda {
   font-size: 1.3rem;
-}
+  position: relative;
 
-.tabs {
-  position: fixed;
-  bottom: 0;
-  padding: 0 1rem;
-  margin: 0 -1rem;
-  width: 100%;
-  max-width: 600px;
-  list-style: none;
-  border-top: solid 2px black;
-  display: flex;
-  justify-content: space-around;
-  height: 60px;
+  .tabs {
+    position: fixed;
+    bottom: 0;
+    padding: 0 1rem;
+    margin: 0 -1rem;
+    width: 100%;
+    max-width: 600px;
+    list-style: none;
+    border-top: solid 2px black;
+    display: flex;
+    justify-content: space-around;
+    height: 60px;
 
-  li {
-    flex: 1;
-    text-align: center;
-    cursor: pointer;
-    margin: auto;
+    li {
+      flex: 1;
+      text-align: center;
+      cursor: pointer;
+      margin: auto;
 
-    &:first-child {
-      border-right: solid 2px black;
+      &:first-child {
+        border-right: solid 2px black;
+      }
+
+      &.tab-active {
+        font-weight: 700;
+        font-size: 1.3rem;
+      }
+    }
+  }
+
+  .notification {
+    color: white;
+    padding: 1rem;
+    padding-right: 1.5rem;
+    border-radius: 10px;
+    position: absolute;
+    width: 100%;
+    box-sizing: border-box;
+
+    &__success {
+      background-color: #2e8b57;
     }
 
-    &.tab-active {
-      font-weight: 700;
-      font-size: 1.3rem;
+    &__error {
+      background-color: #8b0000;
+    }
+
+    .close-notification {
+      position: absolute;
+      cursor: pointer;
+      right: 0.5rem;
+      top: 0.5rem;
     }
   }
 }
