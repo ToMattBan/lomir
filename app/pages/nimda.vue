@@ -23,27 +23,30 @@
           <p>{{ user.backstory }}</p>
 
           <div class="_df _jcsa">
-            <div>
+            <div class="_df _fxdc _aic">
               <div>Força</div>
-              <div class="_tac">{{ user.attributes.strength }}</div>
+              <input v-model.number="user.attributes.strength" class="_tac" type="number">
             </div>
-            <div>
+
+            <div class="_df _fxdc _aic">
               <div>Agilidade</div>
-              <div class="_tac">{{ user.attributes.agility }}</div>
+              <input v-model.number="user.attributes.agility" class="_tac" type="number">
             </div>
-            <div>
+
+            <div class="_df _fxdc _aic">
               <div>Resistência</div>
-              <div class="_tac">{{ user.attributes.resistency }}</div>
+              <input v-model.number="user.attributes.resistency" class="_tac" type="number">
             </div>
-            <div>
+
+            <div class="_df _fxdc _aic">
               <div>Foco</div>
-              <div class="_tac">{{ user.attributes.focus }}</div>
+              <input v-model.number="user.attributes.focus" class="_tac" type="number">
             </div>
           </div>
         </div>
 
         <div class="user-buttons">
-          <FantasyButton class="_fz14">Trocar Atributos</FantasyButton>
+          <FantasyButton class="_fz14" @click="updateAttributes(user)">Trocar Atributos</FantasyButton>
           <FantasyButton class="_fz14">Trocar Equipamento</FantasyButton>
         </div>
       </div>
@@ -62,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { ICampaignFileInfo, IUsersFileInfo } from '~/interfaces/storesInfo';
+  import type { ICampaignFileInfo, IUser, IUsersFileInfo } from '~/interfaces/storesInfo';
   import usersFileInfoData from '../stores/usersFileInfo.json';
   import campaignFileInfoData from '../stores/campaignFileInfo.json';
 
@@ -77,6 +80,10 @@
   ];
 
   const currentTab = ref<TTabs>('chars');
+
+  async function updateAttributes(user: IUser) {
+    await updateUser(usersFileInfo.sha, user);
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -165,6 +172,14 @@
       flex: 2;
       max-width: calc((100% / 3) * 2);
       margin: auto;
+
+      input {
+        border: none;
+        box-shadow: none;
+        background: transparent;
+        padding: 0;
+        width: 1.5rem;
+      }
     }
 
     .user-buttons {
