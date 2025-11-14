@@ -51,8 +51,36 @@
         </div>
 
         <div class="user-buttons">
-          <FantasyButton class="_fz14" @click="updateAttributes(user)">Trocar Atributos</FantasyButton>
-          <FantasyButton class="_fz14">Trocar Equipamento</FantasyButton>
+          <FantasyButton class="_fz14" @click="toggleEqpm(user)">Mostrar Equipamentos</FantasyButton>
+          <FantasyButton class="_fz14" @click="updateAttributes(user)">Salvar Dados</FantasyButton>
+        </div>
+
+        <div class="user-eqpm" :class="{'open': userEqpmOpen === user.name}">
+          <div class="user-eqpm__gold">
+            <span>Ouro</span>
+            <input v-model="user.equipment.gold">
+          </div>
+
+          <div class="user-eqpm__weapon">
+            <span>Arma</span>
+            <input v-model="user.equipment.weapon">
+          </div>
+
+          <div class="user-eqpm__armor">
+            <span>Vestimenta</span>
+            <input v-model="user.equipment.armor">
+          </div>
+
+          <div class="user-eqpm__other">
+            <span>Outros</span>
+            <ul>
+              <li :key="index" v-for="eqpm, index in user.equipment.other">
+                <input v-model="user.equipment.other[index]">
+                <div class="removeEqpm" @click="removeEqpm(user, index)">-</div>
+              </li>
+              <li class="newEqpm" @click="addEqpm(user)">New Equipment</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -102,6 +130,22 @@
       notificationType.value = 'error';
       notification.value = `Couldn't update User --> ${ e }`;
     }
+  }
+
+  const userEqpmOpen = ref<string | null>(null);
+
+  function toggleEqpm(user: IUser) {
+    if (userEqpmOpen.value === user.name) {
+      userEqpmOpen.value = null;
+    } else {
+      userEqpmOpen.value = user.name;
+    }
+  }
+  function addEqpm(user: IUser) {
+    user.equipment.other.push('');
+  }
+  function removeEqpm(user: IUser, index: number) {
+    user.equipment.other.splice(index, 1);
   }
 </script>
 
@@ -192,7 +236,6 @@
         text-decoration-line: line-through;
       }
     }
-
   }
 }
 
@@ -211,12 +254,14 @@
       flex: 1;
       max-width: calc(100% / 3);
       object-fit: cover;
+      z-index: 1;
     }
 
     .user-infos {
       flex: 2;
       max-width: calc((100% / 3) * 2);
       margin: auto;
+      z-index: 1;
 
       input {
         border: none;
@@ -231,9 +276,122 @@
       display: flex;
       width: 100%;
       gap: 1rem;
+      z-index: 1;
 
       button {
         flex: 1;
+      }
+    }
+
+    .user-eqpm {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: -100%;
+      opacity: 0;
+      transition: all 0.4s ease-out;
+
+      &.open {
+        opacity: 1;
+        margin-top: 0%;
+      }
+
+      .user-eqpm__gold,
+      .user-eqpm__weapon,
+      .user-eqpm__armor,
+      .user-eqpm__other {
+        border-radius: 8px;
+        flex: 1;
+        min-width: 33%;
+        border: solid 3px black;
+        padding: 0.5rem 1rem;
+
+        span {
+          letter-spacing: 2px;
+        }
+
+        input {
+          text-align: center;
+          color: black;
+          background: rgba(255, 255, 255, 0.23);
+        }
+      }
+
+      .user-eqpm__gold {
+        background-color: #d6c31593;
+
+        &, input {
+          border-color: #a99a10;
+        }
+      }
+
+      .user-eqpm__weapon {
+        background-color: #7f988793;
+
+        &, input {
+          border-color: #7f9887;
+        }
+      }
+
+      .user-eqpm__armor {
+        background-color: #12379093;
+
+        &, input {
+          border-color: #123790;
+        }
+      }
+
+      .user-eqpm__other {
+        width: 100%;
+        flex: unset;
+        background-color: #7a470593;
+
+        &, input {
+          border-color: #7a4705;
+        }
+
+        ul {
+          list-style: none;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: 0.5rem;
+
+          li{
+            margin-left: 1rem;
+            display: flex;
+            gap: 12px;
+
+            &.newEqpm,
+            .removeEqpm {
+              border-radius: 10px;
+              padding: 4px 16px;
+              cursor: pointer;
+              width: fit-content;
+            }
+
+            &.newEqpm{
+              margin-left: 1rem;
+              background-color: #68aa85;
+              border: solid 3px #0a3e21;
+            }
+
+            input {
+              text-align: left;
+              width: 100%;
+
+              &~div {
+                width: 3rem;
+                text-align: center;
+                background-color: rgb(161, 92, 92);
+                border: solid 3px rgb(73, 18, 18);
+                color: white;
+                display: flex;
+                align-items: center;
+              }
+            }
+          }
+        }
       }
     }
   }
