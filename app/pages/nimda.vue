@@ -22,7 +22,8 @@
         <div class="user-infos">
           <p class="_df _jcsa _fw7 _fz20">
             <span>{{ user.name }}</span>
-            <span>{{ user.race }}</span>
+            <span>{{ user.age }}</span>
+            <span>{{ user.career }}</span>
           </p>
 
           <p>{{ user.backstory }}</p>
