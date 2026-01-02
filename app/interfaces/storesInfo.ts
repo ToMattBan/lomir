@@ -6,8 +6,9 @@ export interface IUsersFileInfo {
 
 export interface IUser {
   name: string;
-  race: string;
+  age: number;
   image: string;
+  career: string;
   backstory: string;
   attributes: {
     strength: number;

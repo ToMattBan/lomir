@@ -2,11 +2,7 @@
   <div class="home-container">
     <h1 class="">{{ name }}</h1>
 
-    <div class="_fz30 _tac" v-if="existingUser">
-      Parece que você já criou um personagem. Agora é só esperar S2
-    </div>
-
-    <div class="typewriter-container" v-else>
+    <div class="typewriter-container">
       <div v-show="displayText">
         <span class="typewriter-text">{{ displayText }}</span>
         <span class="cursor">|</span>
@@ -18,7 +14,7 @@
           @input="clearError"
         >
         <input
-          v-model="userRace" placeholder="Sua raça aqui" v-show="inputToshow === 'race'"
+          v-model.number="userAge" placeholder="Sua idade aqui" v-show="inputToshow === 'age'"
           @input="clearError"
         >
 
@@ -26,6 +22,11 @@
           <img :src="userImage">
           <input type="file" @change="newImage" @input="clearError">
         </div>
+
+        <input
+          v-model="userCareer" placeholder="Sua aspiração aqui" v-show="inputToshow === 'career'"
+          @input="clearError"
+        >
 
         <textarea
           v-model="userBackstory" placeholder="De onde veio, o que já fez, etc..." v-show="inputToshow === 'backstory'"
@@ -54,30 +55,23 @@
   import usersFileInfoData from '../stores/usersFileInfo.json';
 
   type TStartButtons = 'none' | 'start' | 'startForm' | 'continue';
-  type TStartInputs = 'none' | 'name' | 'race' | 'image' | 'backstory';
-  type TSentences = 'initial' | 'questionName' | 'questionRace' | 'questionImage' | 'questionBackstory' | 'finish';
-
-  const existingUser = ref<boolean>(false);
-  onMounted(() => {
-    const user = localStorage.getItem('user');
-    if (user) {
-      existingUser.value = true;
-      navigateTo('/char');
-    }
-  });
+  type TStartInputs = 'none' | 'name' | 'age' | 'image' | 'career' | 'backstory';
+  type TSentences = 'initial' | 'questionName' | 'questionAge' | 'questionImage' | 'questionCareer' | 'questionBackstory' | 'finish';
 
   const userName = ref<string>('');
-  const userRace = ref<string>('');
+  const userAge = ref<number>(0);
   const userImage = ref<string>('');
+  const userCareer = ref<string>('');
   const userBackstory = ref<string>('');
   const usersFileInfo = reactive<IUsersFileInfo>(usersFileInfoData);
 
   async function saveUser() {
     const user: IUser = {
       name: userName.value.trim(),
-      race: userRace.value.trim(),
-      backstory: userBackstory.value.trim(),
+      age: userAge.value,
       image: userImage.value.trim(),
+      career: userCareer.value.trim(),
+      backstory: userBackstory.value.trim(),
       attributes: {
         agility: 0,
         focus: 0,
@@ -145,8 +139,8 @@
   const allSentences = {
     initial: [
       `Bem-vindo à ${ name }!`,
-      'Você acha que é capaz de sobreviver a esse mundo do qual você não sabe NADA??',
-      'Vamos ver se você continuará tão valentão até o final da campanha! MUAHAHAHAHA',
+      'O mundo que você conhece já não é mais o mesmo',
+      'As coisas mudam, mas será que você consegue acompanhar as mudanças?',
       '...',
       '...',
       'Mas espera, eu nem sei quem você é...',
@@ -156,17 +150,24 @@
       'Ok, vamos começar do começo.',
       'Qual é o seu nome?',
     ],
-    questionRace: [
-      `Ah, então é assim que você se chama.`,
-      'Mas o quê você é? Qual sua raça?',
+    questionAge: [
+      'Ah, então é assim que você se chama.',
+      'Veja bem, esse mundo é hostil para quem ainda engatinha',
+      'Mas parece que não é o seu caso, certo?',
+      'Me diga, quantos anos você tem?',
     ],
     questionImage: [
-      'Oh, faz tempo que não via um desses.',
-      'E pra falar a verdade eu não estou vendo muito bem, perdi meus óculos, sabe...',
+      'Oh, eu nunca adivinharia.',
+      'Ainda mais hoje, que eu não estou vendo muito bem, perdi meus óculos, sabe...',
       'Poderia me mostrar como tu está agora?',
     ],
+    questionCareer: [
+      'Hmmm, podia botar um pouco de maquiagem para arrumar isso aí né?',
+      'Nem todo mundo nasce bonitão que nem eu',
+      'Eu fico me perguntando, o que alguém como você faz da vida?',
+    ],
     questionBackstory: [
-      'Tendo uma raça tão diferente, deve ter uma boa história por trás, não é?',
+      'Interessate..., deve ter uma boa história por trás disso, não é?',
       'Então vai, me conta sua história',
     ],
     finish: ['Muito obrigado, agora podemos começar... MUAHAHAHAHAH'],
@@ -254,12 +255,15 @@
     } else if (sentencesVariants.value === 'questionName') {
       buttonToShow.value = 'continue';
       inputToshow.value = 'name';
-    } else if (sentencesVariants.value === 'questionRace') {
+    } else if (sentencesVariants.value === 'questionAge') {
       buttonToShow.value = 'continue';
-      inputToshow.value = 'race';
+      inputToshow.value = 'age';
     } else if (sentencesVariants.value === 'questionImage') {
       buttonToShow.value = 'continue';
       inputToshow.value = 'image';
+    } else if (sentencesVariants.value === 'questionCareer') {
+      buttonToShow.value = 'continue';
+      inputToshow.value = 'career';
     } else if (sentencesVariants.value === 'questionBackstory') {
       buttonToShow.value = 'continue';
       inputToshow.value = 'backstory';
@@ -279,11 +283,14 @@
     if (sentencesVariants.value === 'questionName' && !userName.value) {
       validationError.value = 'Todo mundo tem um nome, não tente me enganar';
       return;
-    } else if (sentencesVariants.value === 'questionRace' && !userRace.value) {
+    } else if (sentencesVariants.value === 'questionAge' && (!userAge.value || isNaN(userAge.value))) {
       validationError.value = 'Olha, alguma coisa tu é, de certeza';
       return;
     } else if (sentencesVariants.value === 'questionImage' && !userImage.value) {
       validationError.value = 'Vamos lá, quero ver como tu é, não se acanhe';
+      return;
+    } else if (sentencesVariants.value === 'questionCareer' && !userCareer.value) {
+      validationError.value = 'Vamos lá, alguma aspiração na vida tu deve ter';
       return;
     } else if (sentencesVariants.value === 'questionBackstory' && !userBackstory.value) {
       validationError.value = 'Se tu chegou até aqui, um passado tu tem, me mostra vai';
@@ -302,12 +309,15 @@
       sentencesToShow.value = allSentences.questionName;
       sentencesVariants.value = 'questionName';
     } else if (sentencesVariants.value === 'questionName') {
-      sentencesToShow.value = allSentences.questionRace;
-      sentencesVariants.value = 'questionRace';
-    } else if (sentencesVariants.value === 'questionRace') {
+      sentencesToShow.value = allSentences.questionAge;
+      sentencesVariants.value = 'questionAge';
+    } else if (sentencesVariants.value === 'questionAge') {
       sentencesToShow.value = allSentences.questionImage;
       sentencesVariants.value = 'questionImage';
     } else if (sentencesVariants.value === 'questionImage') {
+      sentencesToShow.value = allSentences.questionCareer;
+      sentencesVariants.value = 'questionCareer';
+    } else if (sentencesVariants.value === 'questionCareer') {
       sentencesToShow.value = allSentences.questionBackstory;
       sentencesVariants.value = 'questionBackstory';
     } else if (sentencesVariants.value === 'questionBackstory') {
