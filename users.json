@@ -34,7 +34,9 @@
       "gold": "500",
       "armor": "Terno Chique",
       "weapon": "",
-      "other": []
+      "other": [
+        "Caneta"
+      ]
     }
   },
   "Tarion Norcan": {
