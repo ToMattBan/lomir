@@ -44,9 +44,9 @@
     "career": "Druida que busca entender e conhecer a fauna e flora como um todo",
     "backstory": "Veio de uma tribo que vive em meio a floresta, sempre se interessou pelas plantas e vida selvagem. Seus pais eram curandeiros, e o ensinaram a criar diversas poções e venenos. Desde que ficou adulto, saiu para explorar o mundo e buscar uma poção que curasse a doença rara de sua irmã.",
     "attributes": {
-      "agility": 0,
-      "focus": 0,
-      "resistency": 0,
+      "agility": 5,
+      "focus": 4,
+      "resistency": 4,
       "strength": 5
     },
     "equipment": {
