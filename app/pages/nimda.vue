@@ -20,10 +20,10 @@
       <div :key="key" v-for="(user, key) in usersFileInfo.content" class="char-card">
         <img :src="user.image">
         <div class="user-infos">
-          <p class="_df _jcsa _fw7 _fz20">
+          <p class="_df _jcsa _fxww _fw7 _fz20 _tac">
             <span>{{ user.name }}</span>
             <span>{{ user.age }}</span>
-            <span>{{ user.career }}</span>
+            <span class="_1/1">{{ user.career }}</span>
           </p>
 
           <p>{{ user.backstory }}</p>
