@@ -25,9 +25,9 @@
     "career": "Investidor",
     "backstory": "Filho de comerciantes, iniciei a vida no meio de pessoas, aprendendo muito e trabalhando bastante desde jovem, vendendo principalmente jóias (falsas e verdadeiras). Com o tempo fui evoluindo e ganhando muito dinheiro no comércio até ir para metrópoles grandes investindo meu dinheiro em ações e negócios com potencial lucrativo. Atualmente tenho boa condição financeira e moro em lugares diferentes nas minhas diferentes casas e apartamentos.",
     "attributes": {
-      "agility": 0,
-      "focus": 0,
-      "resistency": 0,
+      "agility": 3,
+      "focus": 5,
+      "resistency": 4,
       "strength": 4
     },
     "equipment": {
