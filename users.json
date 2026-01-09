@@ -6,10 +6,10 @@
     "career": "Sou ilustradora, faço animações e artes para filmes, series, jogos, tudo.",
     "backstory": "Perdi meua pais quado era pequena, nem lembro deles, cresci com meus avós.  Sempre fui péssima na escola, não gostava de estudar, preferia ficar rabiscando e desenhando nos cadernos e até nas provas.\nNo início do ensino médio meus avós desistiram de me dar bronca e começaram a aceitar o meu estilo desenhiata de vida.\nMe formei em artes digitais e hoje trabalho com desenho pra viver.",
     "attributes": {
-      "agility": 0,
-      "focus": 0,
-      "resistency": 0,
-      "strength": 0
+      "agility": 4,
+      "focus": 6,
+      "resistency": 3,
+      "strength": 3
     },
     "equipment": {
       "gold": 0,
@@ -28,7 +28,7 @@
       "agility": 0,
       "focus": 0,
       "resistency": 0,
-      "strength": 0
+      "strength": 4
     },
     "equipment": {
       "gold": 0,
@@ -47,7 +47,7 @@
       "agility": 0,
       "focus": 0,
       "resistency": 0,
-      "strength": 0
+      "strength": 5
     },
     "equipment": {
       "gold": 0,
@@ -66,7 +66,7 @@
       "agility": 0,
       "focus": 0,
       "resistency": 0,
-      "strength": 0
+      "strength": 2
     },
     "equipment": {
       "gold": 0,
