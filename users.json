@@ -63,9 +63,9 @@
     "career": "Eu estou aproveitando o que me resta da vida",
     "backstory": "Nasci no interior, criada matando galinhas, cuidando da roça. Até a juventude minha vida foi essa. Quando estava na adolescência me casei para sair de casa. Meu casamento não foi infeliz, mas não foi com meu grande amor 😢. Eu e me falecido marido não tivemos filhos. Depois que ele faleceu aproveitei o que não pude na juventude. Me senti viva novamente. Agora estou tranquila, cuidando de meus gatos e minhas plantas até minha hora chegar.",
     "attributes": {
-      "agility": 0,
-      "focus": 0,
-      "resistency": 0,
+      "agility": 2,
+      "focus": 4,
+      "resistency": 2,
       "strength": 2
     },
     "equipment": {
