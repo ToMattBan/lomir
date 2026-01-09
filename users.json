@@ -73,10 +73,12 @@
       "strength": 2
     },
     "equipment": {
-      "gold": 0,
-      "armor": "",
+      "gold": "100",
+      "armor": "Casaco de Lã",
       "weapon": "",
-      "other": []
+      "other": [
+        "Óculos de Grau"
+      ]
     }
   }
 }
