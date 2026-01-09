@@ -31,8 +31,8 @@
       "strength": 4
     },
     "equipment": {
-      "gold": 0,
-      "armor": "",
+      "gold": "500",
+      "armor": "Terno Chique",
       "weapon": "",
       "other": []
     }
