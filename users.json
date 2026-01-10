@@ -60,8 +60,10 @@
     "equipment": {
       "gold": 0,
       "armor": "Sobretudo",
-      "weapon": "",
-      "other": []
+      "weapon": "Rifle",
+      "other": [
+        "Sedativos"
+      ]
     }
   },
   "Ella": {
