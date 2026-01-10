@@ -79,9 +79,10 @@
     "equipment": {
       "gold": "100",
       "armor": "Casaco de Lã",
-      "weapon": "",
+      "weapon": "Rifle",
       "other": [
-        "Óculos de Grau"
+        "Óculos de Grau",
+        "Sedativos Munição"
       ]
     }
   }
